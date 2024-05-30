@@ -12,4 +12,4 @@ module "s3backend" {
 
 You can use a generic Git address to version-control GitHub modules by specifying a branch or tag name. Generic Git URLs are prefixed with the address git::
 
-Link terraform registry: https://registry.terraform.io/modules/aoshfan/s3backend/aws/latest?tab=outputs
+Link terraform registry: https://registry.terraform.io/modules/aoshfan/s3backend/aws/latest
