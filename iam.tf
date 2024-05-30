@@ -5,21 +5,21 @@ locals {
 }
 
 resource "aws_iam_role" "iam_role" {
-  name = "${local.namespace}-tf-assume-local"
+  name = "${local.namespace}-tf-assume-role"
 
   assume_role_policy = <<-EOF
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Action": "sts:AssumeRole",
-        "Principal": {
-          "AWS": ${jsonencode(local.principal_arns)}
-        },
-        "Effect": "Allow",
-      }
-    ]
-  }
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": "sts:AssumeRole",
+          "Principal": {
+              "AWS": ${jsonencode(local.principal_arns)}
+          },
+          "Effect": "Allow"
+        }
+      ]
+    }
   EOF
 
   tags = {
@@ -32,6 +32,7 @@ data "aws_iam_policy_document" "policy_doc" {
     actions = [
       "s3:ListBucket",
     ]
+
     resources = [
       aws_s3_bucket.s3_bucket.arn
     ]
@@ -41,7 +42,7 @@ data "aws_iam_policy_document" "policy_doc" {
     actions = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
 
     resources = [
-      "${aws_s3_bucket.s3_bucket.arn}/*"
+      "${aws_s3_bucket.s3_bucket.arn}/*",
     ]
   }
 
@@ -49,16 +50,14 @@ data "aws_iam_policy_document" "policy_doc" {
     actions = [
       "dynamodb:GetItem",
       "dynamodb:PutItem",
-      "dynamodb:DeleteItem",
+      "dynamodb:DeleteItem"
     ]
-    resources = [
-      aws_dynamodb_table.dynamodb_table.arn
-    ]
+    resources = [aws_dynamodb_table.dynamodb_table.arn]
   }
 }
 
 resource "aws_iam_policy" "iam_policy" {
-  name   = "${local.namespace}-tf-policy-local"
+  name   = "${local.namespace}-tf-policy"
   path   = "/"
   policy = data.aws_iam_policy_document.policy_doc.json
 }
