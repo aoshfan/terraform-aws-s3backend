@@ -6,7 +6,7 @@ This module will deploy an S3 remote backend for Terraform
 
 ```h
 module "s3backend" {
-   source ="github.com/terraform-in-action/terraform-aws-s3backend"
+   source ="github.com/aoshfan/terraform-aws-s3backend"
 }
 ```
 
